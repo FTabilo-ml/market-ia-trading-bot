@@ -5,5 +5,5 @@ __pycache__/
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Data files
+# Data managed via DVC
 /data/
