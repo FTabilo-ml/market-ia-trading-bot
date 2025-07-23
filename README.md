@@ -1,29 +1,27 @@
 # market-ia-trading-bot
 
-Este proyecto implementa un bot de trading basado en IA. A continuaci\u00f3n se describe la estructura recomendada:
+Este repositorio contiene un bot de trading basado en IA. La siguiente tabla
+muestra la organizaci\u00f3n recomendada del proyecto:
 
 ```
 market-ia-trading-bot/
-├ data/
-│   └ raw/                   <- precios, fundamentos, noticias sin procesar
-├ notebooks/
-│   └ 01_eda_exploration.ipynb
+├ data/                 # raw & processed datasets (git-ignored, tracked by DVC)
+│   ├ raw/
+│   └ processed/
+├ notebooks/            # exploratory analysis & demos
 ├ src/
-│   ├ ingest/
-│   │   ├ fetch_prices.py
-│   │   ├ fetch_fundamentals.py
-│   │   └ fetch_news.py
-│   ├ features/
-│   │   ├ technical_indicators.py
-│   │   ├ sentiment_analysis.py
-│   │   └ fundamental_scores.py
-│   ├ strategy/
-│   │   └ rules_engine.py
-│   └ evaluation/
-│       └ backtest.py
-├ .gitignore
-├ README.md
-└ requirements.txt
+│   ├ ingest/           # data download & parsing
+│   ├ features/         # technical \u2192 sentiment \u2192 fundamentals
+│   ├ simulator/        # gym environment & execution logic
+│   ├ agents/           # ML / RL models
+│   ├ strategy/         # signal fusion & risk rules
+│   └ evaluation/       # backtests & metrics
+├ tests/                # pytest unit / integration tests
+├ Makefile              # common tasks (fetch_data, train_rl, backtest)
+├ environment.yml       # conda env spec
+├ dvc.yaml              # data/version control pipeline (optional)
+└ README.md             # you are here
 ```
 
-Cada m\u00f3dulo se divide por responsabilidades: `ingest` obtiene los datos, `features` genera variables de inter\u00e9s, `strategy` define las reglas de operaci\u00f3n y `evaluation` permite probar el desempe\u00f1o del bot.
+Cada carpeta agrupa componentes relacionados. Los datos se excluyen del
+control de versiones y pueden gestionarse con DVC.
