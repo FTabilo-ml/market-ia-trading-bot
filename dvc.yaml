@@ -1,0 +1,5 @@
+stages:
+  fetch_data:
+    cmd: make fetch_data
+    outs:
+      - data/raw
