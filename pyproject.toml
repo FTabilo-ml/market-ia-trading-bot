@@ -1,0 +1,11 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "market-ia-trading-bot"
+version = "0.1.0"
+
+[tool.setuptools]
+packages = ["src", "src.features", "src.strategy", "src.evaluation", "src.ingest"]
+package-dir = {"" = "."}

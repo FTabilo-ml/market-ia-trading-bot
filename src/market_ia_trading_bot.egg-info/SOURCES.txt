@@ -1,0 +1,10 @@
+README.md
+setup.py
+src/agents/basic_agent.py
+src/market_ia_trading_bot.egg-info/PKG-INFO
+src/market_ia_trading_bot.egg-info/SOURCES.txt
+src/market_ia_trading_bot.egg-info/dependency_links.txt
+src/market_ia_trading_bot.egg-info/top_level.txt
+src/simulator/__init__.py
+src/simulator/env.py
+tests/test_basic_agent.py
