@@ -1,9 +1,11 @@
-"""C\u00e1lculo de indicadores t\u00e9cnicos."""
+import pandas as pd
+import ta
 
-from typing import List
-
-def moving_average(prices: List[float], window: int = 3) -> List[float]:
-    """Devuelve la media m\u00f3vil simple para una ventana dada."""
-    if window <= 0:
-        raise ValueError("window must be positive")
-    return [sum(prices[i:i+window]) / window for i in range(len(prices) - window + 1)]
+def add_indicators(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()
+    df = ta.add_all_ta_features(
+        df, open="Open", high="High", low="Low",
+        close="Close", volume="Volume", fillna=True)
+    # indicador simple de cruce de medias
+    df["golden_cross"] = (df["trend_ema_fast"] > df["trend_ema_slow"]).astype(int)
+    return df

@@ -1,8 +1,17 @@
 name: market-ia-trading-bot
 channels:
+  - conda-forge
   - defaults
 dependencies:
   - python=3.11
+  - pandas
+  - numpy
+  - pyarrow          # <-- ya incluido
+  - tqdm
+  - ta
+  - matplotlib
+  - scikit-learn
   - pip
   - pip:
-    - -r requirements.txt
+      - yfinance
+
