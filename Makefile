@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .PHONY: env ml_dataset train_ml rank_dataset train_rank backtest_rank backtest_bt
 
 # Create/update Conda environment
@@ -39,3 +40,19 @@ backtest_bt:
 	python scripts/backtest_longterm_bt.py \
 	  --horizon 36 --model lgbm --topk 3 \
 	  --only_test --cash 100000 --commission_bps 10 --save_png
+=======
+
+.PHONY: fetch_congress fetch_news preprocess
+
+# 1. Descargar / actualizar repos con las operaciones de congresistas
+fetch_congress:
+	python -m src.ingest.fetch_congress_trades
+
+# 2. Descargar noticias recientes y guardarlas en Parquet
+fetch_news:
+	python -m src.ingest.fetch_news
+
+# 3. Generar los Parquet procesados con TA + fundamentales + congresistas + news
+preprocess: fetch_congress fetch_news
+	python scripts/preprocess.py
+>>>>>>> 8d2030143efe8524c125e0b58ccf7a5cd63f39ad

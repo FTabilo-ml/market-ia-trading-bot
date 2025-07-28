@@ -4,6 +4,7 @@ channels:
   - defaults
 dependencies:
   - python=3.11
+<<<<<<< HEAD
   - pandas>=2.2
   - numpy>=1.26
   - scipy
@@ -20,3 +21,16 @@ dependencies:
   - pip
   - pip:
       - yfinance
+=======
+  - pandas
+  - numpy
+  - pyarrow          # <-- ya incluido
+  - tqdm
+  - ta
+  - matplotlib
+  - scikit-learn
+  - pip
+  - pip:
+      - yfinance
+
+>>>>>>> 8d2030143efe8524c125e0b58ccf7a5cd63f39ad

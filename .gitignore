@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Python
 __pycache__/
 *.py[cod]
@@ -26,3 +27,14 @@ artifacts/
 
 # DVC (sí versionamos sus metadatos, NO ignores .dvc/)
 # DVC ya pondrá .gitignore dentro de data/ si lo usas
+=======
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Data managed via DVC
+/data/
+>>>>>>> 8d2030143efe8524c125e0b58ccf7a5cd63f39ad

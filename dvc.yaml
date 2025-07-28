@@ -1,4 +1,5 @@
 stages:
+<<<<<<< HEAD
   preprocess:
     cmd: python scripts/preprocess.py
     deps:
@@ -24,3 +25,9 @@ stages:
       - data/ml/preds_${h}m_lgbm.parquet
     outs_no_cache:
       - artifacts/ml/longterm_${h}m_lgbm.pkl
+=======
+  fetch_data:
+    cmd: make fetch_data
+    outs:
+      - data/raw
+>>>>>>> 8d2030143efe8524c125e0b58ccf7a5cd63f39ad
