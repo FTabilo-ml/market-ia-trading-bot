@@ -117,7 +117,11 @@ pip install pandas numpy scikit-learn lightgbm backtrader matplotlib joblib fast
 1. **Preprocess raw data**
 
    ```bash
+mbwaz7-codex/create-directory-structure-and-move-scripts
    make preprocess
+=======
+   python scripts/prep/preprocess.py
+main
    ```
 
    This downloads congress/news data if missing and runs `scripts/prep/preprocess.py` to populate `data/processed/` with per‑ticker files.
