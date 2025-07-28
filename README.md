@@ -70,6 +70,20 @@
 
 ---
 
+## Data downloads
+
+1. **Prices** – download the Kaggle [stock market dataset](https://www.kaggle.com/datasets/jacksoncrow/stock-market-dataset) and convert each CSV to Parquet under `data/raw/kaggle/prices/parquet/` (one file per ticker). Any helper that writes `TICKER.parquet` with OHLCV + Adj Close is valid.
+2. **Congress trades** – either run `make fetch_congress` (uses `src/ingest/fetch_congress_trades`) or download the [congressional trading dataset](https://www.kaggle.com/datasets/shabbarank/congressional-trading-inception-to-march-23) and save it as `data/raw/congress/trades.parquet`.
+3. **News** – run `make fetch_news` to grab recent headlines via Google News RSS.
+
+Once the raw files exist you can preprocess everything:
+
+```bash
+make preprocess       # runs scripts/prep/preprocess.py
+```
+
+---
+
 ## Data preprocessing (`preprocess.py`)
 
 The `preprocess.py` script combines raw price files with fundamentals, congress trading flows
@@ -103,10 +117,10 @@ pip install pandas numpy scikit-learn lightgbm backtrader matplotlib joblib fast
 1. **Preprocess raw data**
 
    ```bash
-   python scripts/prep/preprocess.py
+   make preprocess
    ```
 
-   This populates `data/processed/` with per‑ticker files including technical indicators, fundamentals, congress flows and news sentiment.
+   This downloads congress/news data if missing and runs `scripts/prep/preprocess.py` to populate `data/processed/` with per‑ticker files.
 
 2. **Build the dataset**
 
