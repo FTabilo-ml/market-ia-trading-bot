@@ -12,15 +12,15 @@ fetch_news:
 	python -m src.ingest.fetch_news
 
 preprocess: fetch_congress fetch_news
-	python scripts/preprocess.py
+       python scripts/prep/preprocess.py
 
 # Build monthly ranking dataset
 rank_dataset:
-	python scripts/make_rank_dataset.py --horizon 36
+       python scripts/datasets/make_rank_dataset.py --horizon 36
 
 # Train LightGBM ranker and score future months
 train_rank:
-	python scripts/train_ranker.py \
+       python scripts/training/train_ranker.py \
 	  --horizon 36 --split 2017-01-01 \
 	  --rel_bins 3 --eval_k 5,10 \
 	  --num_leaves 31 --min_data_in_leaf 200 \
@@ -30,7 +30,7 @@ train_rank:
 	  --score_future
 
 backtest_rank:
-	python scripts/backtest_longterm_bt.py \
+       python scripts/backtests/backtest_longterm_bt.py \
 	  --horizon 36 --model rank --topk 5 \
 	  --date_from 2017-01-01 --date_to 2020-04-30 \
 	  --cash 100000 --commission_bps 10 --save_png

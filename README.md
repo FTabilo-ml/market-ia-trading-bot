@@ -36,10 +36,22 @@
 ```
 .
 ├─ scripts/
-│  ├─ preprocess.py
-│  ├─ make_rank_dataset.py
-│  ├─ train_ranker.py
-│  └─ backtest_longterm_bt.py
+│  ├─ prep/
+│  │  └─ preprocess.py
+│  ├─ datasets/
+│  │  ├─ make_ml_table_longterm.py
+│  │  └─ make_rank_dataset.py
+│  ├─ training/
+│  │  ├─ train_ml.py
+│  │  └─ train_ranker.py
+│  ├─ backtests/
+│  │  ├─ backtest_longterm.py
+│  │  └─ backtest_longterm_bt.py
+│  └─ tools/
+│     ├─ backtest_ml.py
+│     ├─ portfolio_backtest.py
+│     ├─ grid_search_sma.py
+│     └─ ...
 ├─ legacy/
 │  └─ backtrader_sma_sent_congress.py
 ├─ data/
@@ -58,6 +70,20 @@
 
 ---
 
+## Data downloads
+
+1. **Prices** – download the Kaggle [stock market dataset](https://www.kaggle.com/datasets/jacksoncrow/stock-market-dataset) and convert each CSV to Parquet under `data/raw/kaggle/prices/parquet/` (one file per ticker). Any helper that writes `TICKER.parquet` with OHLCV + Adj Close is valid.
+2. **Congress trades** – either run `make fetch_congress` (uses `src/ingest/fetch_congress_trades`) or download the [congressional trading dataset](https://www.kaggle.com/datasets/shabbarank/congressional-trading-inception-to-march-23) and save it as `data/raw/congress/trades.parquet`.
+3. **News** – run `make fetch_news` to grab recent headlines via Google News RSS.
+
+Once the raw files exist you can preprocess everything:
+
+```bash
+make preprocess       # runs scripts/prep/preprocess.py
+```
+
+---
+
 ## Data preprocessing (`preprocess.py`)
 
 The `preprocess.py` script combines raw price files with fundamentals, congress trading flows
@@ -67,7 +93,7 @@ technical indicators and auxiliary features.
 Run it at least once before building datasets:
 
 ```bash
-python scripts/preprocess.py
+python scripts/prep/preprocess.py
 ```
 
 ---
@@ -91,15 +117,15 @@ pip install pandas numpy scikit-learn lightgbm backtrader matplotlib joblib fast
 1. **Preprocess raw data**
 
    ```bash
-   python scripts/preprocess.py
+   make preprocess
    ```
 
-   This populates `data/processed/` with per‑ticker files including technical indicators, fundamentals, congress flows and news sentiment.
+   This downloads congress/news data if missing and runs `scripts/prep/preprocess.py` to populate `data/processed/` with per‑ticker files.
 
 2. **Build the dataset**
 
    ```bash
-   python scripts/make_rank_dataset.py --horizon 36
+   python scripts/datasets/make_rank_dataset.py --horizon 36
    ```
 
    This writes: `data/ml/dataset_rank_36m.parquet`.
@@ -109,7 +135,7 @@ pip install pandas numpy scikit-learn lightgbm backtrader matplotlib joblib fast
    The v1 settings that performed best in our tests (robust, smooth ordering):
 
    ```bash
-   python scripts/train_ranker.py \
+   python scripts/training/train_ranker.py \
      --horizon 36 --split 2017-01-01 \
      --rel_bins 3 --eval_k 5,10 \
      --num_leaves 31 --min_data_in_leaf 200 \
@@ -128,7 +154,7 @@ pip install pandas numpy scikit-learn lightgbm backtrader matplotlib joblib fast
 4. **Run the backtest (2017‑01..2020‑04)**
 
    ```bash
-   python scripts/backtest_longterm_bt.py \
+   python scripts/backtests/backtest_longterm_bt.py \
      --horizon 36 --model rank --topk 5 \
      --date_from 2017-01-01 --date_to 2020-04-30 \
      --cash 100000 --commission_bps 10 --save_png

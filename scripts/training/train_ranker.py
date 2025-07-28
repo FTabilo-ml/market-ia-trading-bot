@@ -25,7 +25,7 @@ except Exception as e:
 # ---------------------------------------------------------------------
 # Paths por defecto
 # ---------------------------------------------------------------------
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DATA_ML = ROOT / "data" / "ml"
 ARTS = ROOT / "artifacts" / "rank"
 ARTS.mkdir(parents=True, exist_ok=True)
