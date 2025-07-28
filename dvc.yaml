@@ -1,5 +1,26 @@
 stages:
-  fetch_data:
-    cmd: make fetch_data
-    outs:
+  preprocess:
+    cmd: python scripts/preprocess.py
+    deps:
+      - scripts/preprocess.py
       - data/raw
+    outs:
+      - data/processed
+
+  make_ml_table:
+    cmd: python scripts/make_ml_table.py --horizon ${h} --tickers all
+    deps:
+      - scripts/make_ml_table.py
+      - data/processed
+    outs:
+      - data/ml/dataset_${h}m.parquet
+
+  train_ml:
+    cmd: python scripts/train_ml_longterm.py --horizon ${h} --model lgbm --split ${split}
+    deps:
+      - scripts/train_ml_longterm.py
+      - data/ml/dataset_${h}m.parquet
+    outs:
+      - data/ml/preds_${h}m_lgbm.parquet
+    outs_no_cache:
+      - artifacts/ml/longterm_${h}m_lgbm.pkl

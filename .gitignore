@@ -1,9 +1,28 @@
-# Byte-compiled / optimized / DLL files
+# Python
 __pycache__/
 *.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.dist/
+build/
+.env
+.venv/
+.envrc
 
-# Jupyter Notebook checkpoints
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Notebooks
 .ipynb_checkpoints/
 
-# Data managed via DVC
-/data/
+# Datos y artefactos locales (no versionar en Git)
+data/
+artifacts/
+
+# DVC (sí versionamos sus metadatos, NO ignores .dvc/)
+# DVC ya pondrá .gitignore dentro de data/ si lo usas

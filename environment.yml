@@ -4,14 +4,19 @@ channels:
   - defaults
 dependencies:
   - python=3.11
-  - pandas
-  - numpy
-  - pyarrow          # <-- ya incluido
-  - tqdm
-  - ta
+  - pandas>=2.2
+  - numpy>=1.26
+  - scipy
+  - scikit-learn>=1.4
+  - lightgbm
+  - fastparquet
+  - pyarrow
   - matplotlib
-  - scikit-learn
+  - ta
+  - backtrader
+  - joblib
+  - tqdm
+  - dvc              # si usarás DVC (puede pedir git instalado)
   - pip
   - pip:
       - yfinance
-
