@@ -2,7 +2,7 @@
 from __future__ import annotations
 import sys, pathlib, pandas as pd
 
-ROOT = pathlib.Path(__file__).resolve().parents[1]
+ROOT = pathlib.Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path: sys.path.insert(0, str(ROOT))
 
 from src.evaluation.backtest import run_backtest, summary, BTConfig
