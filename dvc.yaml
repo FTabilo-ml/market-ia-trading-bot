@@ -1,5 +1,4 @@
 stages:
-<<<<<<< HEAD
   preprocess:
     cmd: python scripts/preprocess.py
     deps:
@@ -7,27 +6,19 @@ stages:
       - data/raw
     outs:
       - data/processed
-
-  make_ml_table:
-    cmd: python scripts/make_ml_table.py --horizon ${h} --tickers all
+  rank_dataset:
+    cmd: python scripts/make_rank_dataset.py --horizon ${h}
     deps:
-      - scripts/make_ml_table.py
+      - scripts/make_rank_dataset.py
       - data/processed
     outs:
-      - data/ml/dataset_${h}m.parquet
-
-  train_ml:
-    cmd: python scripts/train_ml_longterm.py --horizon ${h} --model lgbm --split ${split}
+      - data/ml/dataset_rank_${h}m.parquet
+  train_ranker:
+    cmd: python scripts/train_ranker.py --horizon ${h} --split ${split} --score_future
     deps:
-      - scripts/train_ml_longterm.py
-      - data/ml/dataset_${h}m.parquet
+      - scripts/train_ranker.py
+      - data/ml/dataset_rank_${h}m.parquet
     outs:
-      - data/ml/preds_${h}m_lgbm.parquet
+      - data/ml/preds_rank_${h}m.parquet
     outs_no_cache:
-      - artifacts/ml/longterm_${h}m_lgbm.pkl
-=======
-  fetch_data:
-    cmd: make fetch_data
-    outs:
-      - data/raw
->>>>>>> 8d2030143efe8524c125e0b58ccf7a5cd63f39ad
+      - artifacts/rank/ranker_${h}m_lgbm.pkl

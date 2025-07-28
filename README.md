@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Long‑Horizon Cross‑Sectional Ranker + Monthly Backtest (Backtrader)
 
 **v1** — Build a monthly cross‑sectional ranking model (LightGBM LambdaRank) from OHLCV data, generate monthly signals (Top‑K), and run a transaction‑cost aware Backtrader backtest with monthly rebalancing.
@@ -37,9 +36,12 @@
 ```
 .
 ├─ scripts/
+│  ├─ preprocess.py
 │  ├─ make_rank_dataset.py
 │  ├─ train_ranker.py
 │  └─ backtest_longterm_bt.py
+├─ legacy/
+│  └─ backtrader_sma_sent_congress.py
 ├─ data/
 │  ├─ processed/          # per-ticker OHLCV parquet: TICKER.parquet
 │  └─ ml/                 # dataset / predictions parquet
@@ -53,6 +55,20 @@
 - Required cols: `Date`, `Open`, `High`, `Low`, `Close`, `Volume`
 - Optional: `Sector`, `Industry` (for sector‑neutral z‑scores)
 - Indexed by `Date` or include `Date` column (daily).
+
+---
+
+## Data preprocessing (`preprocess.py`)
+
+The `preprocess.py` script combines raw price files with fundamentals, congress trading flows
+and news sentiment. It outputs one Parquet file per ticker under `data/processed/` with
+technical indicators and auxiliary features.
+
+Run it at least once before building datasets:
+
+```bash
+python scripts/preprocess.py
+```
 
 ---
 
@@ -72,9 +88,15 @@ pip install pandas numpy scikit-learn lightgbm backtrader matplotlib joblib fast
 
 ## Quickstart (reproduce v1)
 
-*Assumes you already have* `data/processed/*.parquet` *with OHLCV.*
+1. **Preprocess raw data**
 
-1. **Build the dataset**
+   ```bash
+   python scripts/preprocess.py
+   ```
+
+   This populates `data/processed/` with per‑ticker files including technical indicators, fundamentals, congress flows and news sentiment.
+
+2. **Build the dataset**
 
    ```bash
    python scripts/make_rank_dataset.py --horizon 36
@@ -82,7 +104,7 @@ pip install pandas numpy scikit-learn lightgbm backtrader matplotlib joblib fast
 
    This writes: `data/ml/dataset_rank_36m.parquet`.
 
-2. **Train the ranker + score future**
+3. **Train the ranker + score future**
 
    The v1 settings that performed best in our tests (robust, smooth ordering):
 
@@ -103,7 +125,7 @@ pip install pandas numpy scikit-learn lightgbm backtrader matplotlib joblib fast
    - `data/ml/preds_rank_36m.parquet` with columns: `Date`, `Ticker`, `split`, `raw_score`, `score`
    - IC/NDCG printed for test months (e.g., 2017‑01..2017‑04 if H=36).
 
-3. **Run the backtest (2017‑01..2020‑04)**
+4. **Run the backtest (2017‑01..2020‑04)**
 
    ```bash
    python scripts/backtest_longterm_bt.py \
@@ -238,33 +260,3 @@ This code is for research/educational use. **No investment advice.** Past perfor
 ---
 
 *Done.* If you want, I can also generate a minimal `requirements.txt` and a short example notebook that runs the three steps end‑to‑end.
-
-=======
-# market-ia-trading-bot
-
-Este repositorio contiene un bot de trading basado en IA. La siguiente tabla
-muestra la organizaci\u00f3n recomendada del proyecto:
-
-```
-market-ia-trading-bot/
-├ data/                 # raw & processed datasets (git-ignored, tracked by DVC)
-│   ├ raw/
-│   └ processed/
-├ notebooks/            # exploratory analysis & demos
-├ src/
-│   ├ ingest/           # data download & parsing
-│   ├ features/         # technical \u2192 sentiment \u2192 fundamentals
-│   ├ simulator/        # gym environment & execution logic
-│   ├ agents/           # ML / RL models
-│   ├ strategy/         # signal fusion & risk rules
-│   └ evaluation/       # backtests & metrics
-├ tests/                # pytest unit / integration tests
-├ Makefile              # common tasks (fetch_data, train_rl, backtest)
-├ environment.yml       # conda env spec
-├ dvc.yaml              # data/version control pipeline (optional)
-└ README.md             # you are here
-```
-
-Cada carpeta agrupa componentes relacionados. Los datos se excluyen del
-control de versiones y pueden gestionarse con DVC.
->>>>>>> 8d2030143efe8524c125e0b58ccf7a5cd63f39ad
